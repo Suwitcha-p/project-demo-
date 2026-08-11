@@ -1,25 +1,5 @@
 
-## ภาพรวมโครงการ (Project Overview)
-โครงการนี้มีเป้าหมายเพื่อสร้างระบบคลังข้อมูล (Data Warehouse) และระบบการแปลงข้อมูล (Analytics Engineering Pipeline) จากฐานข้อมูลระบบธุรกรรมการค้าเดิม (**Northwind OLTP**) ไปสู่ **Google BigQuery** โดยใช้แนวคิดการจำลองข้อมูลแบบ **Star Schema (Dimensional Modeling)** และ **One Big Table (OBT)** เพื่อรองรับการทำรายงานเชิงลึก (Business Intelligence) และแดชบอร์ดบน **Google Data Studio (Looker Studio)**
-
----
-
-##  1. สถาปัตยกรรมคลังข้อมูล (Data Warehouse Architecture)
-
-![Data Warehouse Architecture](./readme_Image/data-warehouse-architecture.png)
-
-ระบบถูกออกแบบเป็น Data Pipeline แบบ End-to-End ตั้งแต่ต้นทางจนถึงการสร้างรายงาน โดยแบ่งเลเยอร์การประมวลผลบน Google Cloud Platform ดังนี้:
-
-1. **Data Source (OLTP):** ข้อมูลธุรกรรมต้นทางจัดเก็บบน **Google Cloud SQL**
-2. **Google BigQuery Data Lake (`dl_northwind`):** พื้นที่พักข้อมูลดิบ (Raw Data) ที่ถูกสกัดและโหลดเข้ามา (Extract & Load)
-3. **Staging Layer (`dbt_etl_stg_northwind`):** เลเยอร์สำหรับทำ Data Cleansing, Data Type Casting และ Deduplication เบื้องต้น
-4. **Dimensional Data Warehouse Layer (`dbt_etl_dwh_northwind`):** โครงสร้างคลังข้อมูลที่ถูกจัดรูปแบบเป็น **Star Schema** (Fact & Dimension Tables)
-5. **Reporting Layer / OBT (`dbt_etl_obt_northwind`):** การ Denormalize ข้อมูลรวมเป็นตารางเดี่ยวขนาดใหญ่ (**One Big Table**) เพื่อเพิ่มประสิทธิภาพในการ Query
-6. **BI & Visualization:** นำเสนอผลลัพธ์ผ่าน **Google Data Studio**
-
----
-
-## 2. แหล่งข้อมูลต้นทางและฐานข้อมูล OLTP (Raw Datasets & OLTP ERD)
+## แหล่งข้อมูลต้นทางและฐานข้อมูล OLTP (Raw Datasets & OLTP ERD)
 
 ![Northwind OLTP ERD](./readme_Image/northwind-oltp-erd.png)
 
@@ -44,9 +24,9 @@
 
 ---
 
-## 3. การออกแบบโมเดลข้อมูล (Data Modeling)
+## การออกแบบโมเดลข้อมูล (Data Modeling)
 
-### 3.1 โมเดลเชิงแนวคิด (Conceptual Data Model)
+### โมเดลเชิงแนวคิด (Conceptual Data Model)
 กำหนดขอบเขตกระบวนการทางธุรกิจหลัก 3 ด้าน เพื่อวิเคราะห์ผลการดำเนินงาน:
 
 ![Conceptual Model](./readme_Image/conceptual-model.png)
@@ -57,21 +37,21 @@
 
 ---
 
-### 3.2 โมเดลเชิงตรรกะ (Logical Data Model)
+### โมเดลเชิงตรรกะ (Logical Data Model)
 กำหนดความสัมพันธ์ระดับ Entity, Business Attributes และ Keys ของ Star Schema:
 
 ![Logical Model](./readme_Image/logical-model.png)
 
 ---
 
-### 3.3 โมเดลเชิงกายภาพ (Physical Data Model)
+### โมเดลเชิงกายภาพ (Physical Data Model)
 กำหนดโครงสร้างทางเทคนิค ประเภทข้อมูล (Data Types), Primary Key (PK), Foreign Key (FK) และฟิลด์ตรวจสอบความถูกต้อง:
 
 ![Physical Model](./readme_Image/physical-model.png)
 
 ---
 
-## 4. รายละเอียดโครงสร้างตาราง (Data Dictionary)
+## รายละเอียดโครงสร้างตาราง (Data Dictionary)
 
 ### Fact Tables (ตารางข้อเท็จจริง)
 | ตาราง | คำอธิบาย | คีย์หลัก / คีย์นอก (Keys) | คอลัมน์สำคัญ |
@@ -92,7 +72,7 @@
 
 ---
 
-## 5. โครงสร้างเลเยอร์ข้อมูลบน Google BigQuery
+## โครงสร้างเลเยอร์ข้อมูลบน Google BigQuery
 
 ![BigQuery Data Layers](./readme_Image/bigquery-data-layers.png)
 
