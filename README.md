@@ -18,7 +18,7 @@ Overall sales reports to understand better, what is being sold to our customers,
 This means the business is looking forward to getting insights on sales overview.
 
 ### Identifying required tables from ERD
-<img src="./readme_image/northwind-oltp-erd.png">
+<img src=./readme_image/northwind-oltp-erd.png>
 From the above ERD diagram of the OLTP transactional system, we identify the following required tables that will enable us to meet the business requirements:
 
 <br>
