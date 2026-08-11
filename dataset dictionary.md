@@ -1,11 +1,10 @@
-readme_content = """# Northwind Data Warehouse & Analytics Engineering Project
 
-## 📌 ภาพรวมโครงการ (Project Overview)
+## ภาพรวมโครงการ (Project Overview)
 โครงการนี้มีเป้าหมายเพื่อสร้างระบบคลังข้อมูล (Data Warehouse) และระบบการแปลงข้อมูล (Analytics Engineering Pipeline) จากฐานข้อมูลระบบธุรกรรมการค้าเดิม (**Northwind OLTP**) ไปสู่ **Google BigQuery** โดยใช้แนวคิดการจำลองข้อมูลแบบ **Star Schema (Dimensional Modeling)** และ **One Big Table (OBT)** เพื่อรองรับการทำรายงานเชิงลึก (Business Intelligence) และแดชบอร์ดบน **Google Data Studio (Looker Studio)**
 
 ---
 
-## 🏗️ 1. สถาปัตยกรรมคลังข้อมูล (Data Warehouse Architecture)
+##  1. สถาปัตยกรรมคลังข้อมูล (Data Warehouse Architecture)
 
 ![Data Warehouse Architecture](./readme_Image/data-warehouse-architecture.png)
 
@@ -20,13 +19,13 @@ readme_content = """# Northwind Data Warehouse & Analytics Engineering Project
 
 ---
 
-## 🗄️ 2. แหล่งข้อมูลต้นทางและฐานข้อมูล OLTP (Raw Datasets & OLTP ERD)
+## 2. แหล่งข้อมูลต้นทางและฐานข้อมูล OLTP (Raw Datasets & OLTP ERD)
 
 ![Northwind OLTP ERD](./readme_Image/northwind-oltp-erd.png)
 
 ชุดข้อมูลตั้งต้นประกอบด้วยตารางข้อมูลการทำธุรกรรมแบบครบวงจรของระบบ Northwind:
 
-### 📋 รายการไฟล์ชุดข้อมูลดิบ (Source Tables):
+### รายการไฟล์ชุดข้อมูลดิบ (Source Tables):
 * **Core Business Tables:**
   * `customers`: ข้อมูลลูกค้า ข้อมูลติดต่อ และที่อยู่
   * `employees`: ข้อมูลพนักงาน ตำแหน่ง และสายบังคับบัญชา
@@ -45,7 +44,7 @@ readme_content = """# Northwind Data Warehouse & Analytics Engineering Project
 
 ---
 
-## 📐 3. การออกแบบโมเดลข้อมูล (Data Modeling)
+## 3. การออกแบบโมเดลข้อมูล (Data Modeling)
 
 ### 3.1 โมเดลเชิงแนวคิด (Conceptual Data Model)
 กำหนดขอบเขตกระบวนการทางธุรกิจหลัก 3 ด้าน เพื่อวิเคราะห์ผลการดำเนินงาน:
@@ -72,16 +71,16 @@ readme_content = """# Northwind Data Warehouse & Analytics Engineering Project
 
 ---
 
-## 📖 4. รายละเอียดโครงสร้างตาราง (Data Dictionary)
+## 4. รายละเอียดโครงสร้างตาราง (Data Dictionary)
 
-### 🔹 Fact Tables (ตารางข้อเท็จจริง)
+### Fact Tables (ตารางข้อเท็จจริง)
 | ตาราง | คำอธิบาย | คีย์หลัก / คีย์นอก (Keys) | คอลัมน์สำคัญ |
 | :--- | :--- | :--- | :--- |
 | **`fact_sales`** | บันทึกประวัติการขายสินค้าและรายการสั่งซื้อ | PK: `order_id`, `product_id`<br>FK: `customer_id`, `employee_id`, `shipper_id`, `order_date` | `quantity`, `unit_price`, `discount`, `status_id`, `date_allocated`, `purchase_order_id`, `inventory_id`, `shipped_date`, `paid_date` |
 | **`fact_inventory`** | บันทึกความเคลื่อนไหวการรับเข้า-จ่ายออกสต็อก | PK/FK: `inventory_id`<br>FK: `product_id`, `transaction_created_date` | `transaction_type`, `transaction_modified_date`, `quantity`, `purchase_order_id`, `customer_order_id`, `comments` |
 | **`fact_purchase_order`** | บันทึกข้อมูลการสั่งซื้อสินค้าจากซัพพลายเออร์ | PK/FK: `purchase_order_id`<br>FK: `customer_id`, `employee_id`, `product_id`, `supplier_id`, `inventory_id` | `quantity`, `unit_cost`, `date_received`, `shipping_fee`, `taxes`, `payment_date`, `payment_amount`, `payment_method`, `status_id` |
 
-### 🔸 Dimension Tables (ตารางมิติ)
+### Dimension Tables (ตารางมิติ)
 | ตาราง | คำอธิบาย | คีย์หลัก (PK) | คอลัมน์สำคัญ |
 | :--- | :--- | :--- | :--- |
 | **`dim_customer`** | ข้อมูลโปรไฟล์และช่องทางติดต่อของลูกค้า | `customer_id` | `company`, `last_name`, `first_name`, `email_address`, `job_title`, `business_phone`, `address`, `city`, `state_province`, `zip_postal_code`, `country_region` |
@@ -93,7 +92,7 @@ readme_content = """# Northwind Data Warehouse & Analytics Engineering Project
 
 ---
 
-## ☁️ 5. โครงสร้างเลเยอร์ข้อมูลบน Google BigQuery
+## 5. โครงสร้างเลเยอร์ข้อมูลบน Google BigQuery
 
 ![BigQuery Data Layers](./readme_Image/bigquery-data-layers.png)
 
@@ -103,9 +102,9 @@ readme_content = """# Northwind Data Warehouse & Analytics Engineering Project
 * **`dbt_etl_stg_northwind`**: เลเยอร์ Staging ผ่านการคลีนข้อมูล
 * **`dbt_etl_dwh_northwind`**: เลเยอร์ Data Warehouse รูปแบบ Star Schema
 * **`dbt_etl_obt_northwind`**: เลเยอร์ Reporting ประกอบด้วยตาราง One Big Table:
-  * 📊 **`obt_sales_overview`**: รวมข้อมูลการขาย ลูกค้า พนักงาน และสินค้า เพื่อดูภาพรวมยอดขาย
-  * 👤 **`obt_customer_reporting`**: วิเคราะห์พฤติกรรม ยอดซื้อสะสม และกลุ่มลูกค้า
-  * 📦 **`obt_product_inventory`**: วิเคราะห์สินค้าคงคลัง การหมุนเวียนสต็อก และจุดสั่งซื้อซ้ำ
+  * **`obt_sales_overview`**: รวมข้อมูลการขาย ลูกค้า พนักงาน และสินค้า เพื่อดูภาพรวมยอดขาย
+  * **`obt_customer_reporting`**: วิเคราะห์พฤติกรรม ยอดซื้อสะสม และกลุ่มลูกค้า
+  * **`obt_product_inventory`**: วิเคราะห์สินค้าคงคลัง การหมุนเวียนสต็อก และจุดสั่งซื้อซ้ำ
 """
 
 with open("README.md", "w", encoding="utf-8") as f:
