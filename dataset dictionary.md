@@ -1,11 +1,11 @@
 
-## แหล่งข้อมูลต้นทางและฐานข้อมูล OLTP (Raw Datasets & OLTP ERD)
+## OLTP Raw Datasets & OLTP ERD
 
 ![Northwind OLTP ERD](./readme_Image/northwind-oltp-erd.png)
 
 ชุดข้อมูลตั้งต้นประกอบด้วยตารางข้อมูลการทำธุรกรรมแบบครบวงจรของระบบ Northwind:
 
-### รายการไฟล์ชุดข้อมูลดิบ (Source Tables):
+### รายการไฟล์ชุดข้อมูลดิบ :
 * **Core Business Tables:**
   * `customers`: ข้อมูลลูกค้า ข้อมูลติดต่อ และที่อยู่
   * `employees`: ข้อมูลพนักงาน ตำแหน่ง และสายบังคับบัญชา
@@ -24,9 +24,9 @@
 
 ---
 
-## การออกแบบโมเดลข้อมูล (Data Modeling)
+## Data Modeling
 
-### โมเดลเชิงแนวคิด (Conceptual Data Model)
+### Conceptual Data Model
 กำหนดขอบเขตกระบวนการทางธุรกิจหลัก 3 ด้าน เพื่อวิเคราะห์ผลการดำเนินงาน:
 
 ![Conceptual Model](./readme_Image/conceptual-model.png)
@@ -37,14 +37,14 @@
 
 ---
 
-### โมเดลเชิงตรรกะ (Logical Data Model)
+### Logical Data Model
 กำหนดความสัมพันธ์ระดับ Entity, Business Attributes และ Keys ของ Star Schema:
 
 ![Logical Model](./readme_Image/logical-model.png)
 
 ---
 
-### โมเดลเชิงกายภาพ (Physical Data Model)
+### Physical Data Model
 กำหนดโครงสร้างทางเทคนิค ประเภทข้อมูล (Data Types), Primary Key (PK), Foreign Key (FK) และฟิลด์ตรวจสอบความถูกต้อง:
 
 ![Physical Model](./readme_Image/physical-model.png)
@@ -70,24 +70,4 @@
 
 *ทุกตารางใน Physical Model จะมีคอลัมน์ `insertion_timestamp` (datetime) สำหรับการตรวจสอบ Data Lineage และ Audit Trail*
 
----
-
-## โครงสร้างเลเยอร์ข้อมูลบน Google BigQuery
-
-![BigQuery Data Layers](./readme_Image/bigquery-data-layers.png)
-
-การประมวลผลข้อมูลถูกจัดการและจัดแบ่ง Dataset บน Google BigQuery ออกเป็น 4 เลเยอร์หลัก:
-
-* **`dl_northwind`**: เลเยอร์ Data Lake เก็บตารางดิบ
-* **`dbt_etl_stg_northwind`**: เลเยอร์ Staging ผ่านการคลีนข้อมูล
-* **`dbt_etl_dwh_northwind`**: เลเยอร์ Data Warehouse รูปแบบ Star Schema
-* **`dbt_etl_obt_northwind`**: เลเยอร์ Reporting ประกอบด้วยตาราง One Big Table:
-  * **`obt_sales_overview`**: รวมข้อมูลการขาย ลูกค้า พนักงาน และสินค้า เพื่อดูภาพรวมยอดขาย
-  * **`obt_customer_reporting`**: วิเคราะห์พฤติกรรม ยอดซื้อสะสม และกลุ่มลูกค้า
-  * **`obt_product_inventory`**: วิเคราะห์สินค้าคงคลัง การหมุนเวียนสต็อก และจุดสั่งซื้อซ้ำ
-"""
-
-with open("README.md", "w", encoding="utf-8") as f:
-    f.write(readme_content)
-
-print("README.md generated successfully!")
+----------------------------------------------
